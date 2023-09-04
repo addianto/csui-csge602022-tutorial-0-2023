@@ -28,3 +28,4 @@ Follow these steps to create the token:
 10. Try performing `git push` from your local repository again, and use the token as the password.
 
 Alternatively, you can follow the recommended authentication suggested by GitHub. That is, by using SSH-based authentication. It is more secure and more aligned with the best practices in the industry.
+However, if you are using Git on GitHub from a network that blocking SSH (e.g., Hotspot UI), you will need to use HTTPS-based authentication (password/token-based authentication).
