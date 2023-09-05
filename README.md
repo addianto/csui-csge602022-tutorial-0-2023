@@ -53,7 +53,7 @@ Therefore, we usually specify the version of each package in [`requirements.txt`
 
 ### Ignoring Files From Git
 
-We use a [`.gitignore` file](./gitignore) to instruct the Git repository to avoid tracking changes in certain files.
+We use a [`.gitignore` file](./.gitignore) to instruct the Git repository to avoid tracking changes in certain files.
 Generally, the rule of thumb for ignoring files from being tracked by Git is to exclude files that are:
 
 - Environment-specific, such as Python's virtual environment (usually in folders named `env`, `venv`, or variations of them)
@@ -62,5 +62,5 @@ Generally, the rule of thumb for ignoring files from being tracked by Git is to 
 - User-generated data, such as uploaded files and folders during local testing.
 - Sensitive information, such as access token, private key files, and plaintext password files.
 
-To assist you in creating the initial [`.gitignore` file](./gitignore) for your project,
+To assist you in creating the initial [`.gitignore` file](./.gitignore) for your project,
 you can refer to the collection of [`.gitignore` files available on GitHub](https://github.com/github/gitignore/).
