@@ -1,0 +1,24 @@
+---
+name: Deploy to self-hosted Dokku
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Clone the Git repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Push to Dokku
+        uses: dokku/github-action@v1.4.0
+        with:
+          git_remote_url: "ssh://dokku@dokku-ppl.cs.ui.ac.id:22/csui-csge602022-tutorial-0-2023"
+          branch: main
+          command: deploy
+          ssh_host_key: ${{ secrets.SSH_HOST_KEY}}
+          ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}

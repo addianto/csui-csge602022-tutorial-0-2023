@@ -120,7 +120,7 @@ Generally, the rule of thumb for ignoring files from being tracked by Git is to 
   or configuration files created by an IDE (for example: Visual Studio Code's `.vscode` directory).
 - Produced by a compiler, such as `.class` files produced by the Java compiler (`javac`).
 - User-generated data, such as uploaded files and folders during local testing.
-- Sensitive information, such as access token, private key files, and plaintext password files.
+- Sensitive information, such as access tokens, private key files, and plaintext password files.
 
 To assist you in creating the initial [`.gitignore` file](./.gitignore) for your project,
 you can refer to the collection of [`.gitignore` files available on GitHub](https://github.com/github/gitignore/).
