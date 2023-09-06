@@ -1,5 +1,8 @@
 # Tutorial 0
 
+Sample content of the README.md:
+
+```
 Name: Rickey Astley
 
 StudentID: 2206123456
@@ -9,10 +12,67 @@ Class: PBP International
 Hobby: Not giving up
 
 Major: Software Design
+```
 
 ## Lab Notes
 
 The following subsections provide several notes related to the tutorial.
+
+### Project Directory Structure
+
+As per the instructions for [initialising a Django project](https://pbp-fasilkom-ui.github.io/ganjil-2024/en/docs/tutorial-0),
+you need to create a new directory called `shopping_list` on your local development machine.
+You can place this directory anywhere in your local filesystem.
+However, for the sake of clarity, we recommend creating the new directory in your home directory.
+
+If you are using a Windows operating system (OS), your home directory can be found at `C:\Users\<your Windows username>\`.
+For Mac OS or Linux-based OS users, the home directory is typically located at `/home/<your OS username/`.
+
+For instance, if you are using `cmd` (Command Prompt) on Windows,
+you can create the `shopping_list` directory in your home directory with the following commands:
+
+```batch
+cd %USERPROFILE%
+mkdir shopping_list
+cd shopping_list
+```
+
+Similarly, if you are using `pwsh` (PowerShell) on Windows, use these commands:
+
+```pwsh
+cd $USERPROFILE
+mkdir shopping_list
+cd shopping_list
+```
+
+On Mac OS or Linux, the commands are similar to the previous examples:
+
+```shell
+cd $HOME
+mkdir shopping_list
+cd shopping_list
+```
+
+By the end of the tutorial, your `shopping_list` directory under the home directory should have a structure resembling the following directory tree:
+
+```shell
+<your home directory>/
+  <some files>
+  <some directories>/
+  shopping_list/
+    .gitignore
+    .git/
+    env/
+    shopping_list/
+      __init__.py
+      asgi.py
+      settings.py
+      urls.py
+      wsgi.py
+    manage.py
+    README.md
+    requirements.txt
+```
 
 ### Password-based Authentication
 
