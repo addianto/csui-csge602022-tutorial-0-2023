@@ -18,6 +18,8 @@ Major: Software Design
 
 The following subsections provide several notes related to the tutorial.
 
+## Model & Table
+
 ### Project Directory Structure
 
 As per the instructions for [initialising a Django project](https://pbp-fasilkom-ui.github.io/ganjil-2024/en/docs/tutorial-0),
