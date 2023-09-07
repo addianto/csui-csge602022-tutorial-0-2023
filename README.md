@@ -18,7 +18,31 @@ Major: Software Design
 
 The following subsections provide several notes related to the tutorial.
 
-## Model & Table
+### Object-Relational Mapping (ORM)
+
+TODO: Revise the following draft
+
+Tutorial 1's instructions told you to write the following code in [`models.py`](./main/models.py):
+
+```python
+from django.db import models
+
+class Product(models.Model):
+    name = models.CharField(max_length=255)
+    date_added = models.DateField(auto_now_add=True)
+    price = models.IntegerField()
+    description = models.TextField()
+```
+
+The `Product` class you just wrote represents the *data model* that will be stored into a permanent data storage such as a database.
+The class represents the structure of your data, while later the instantiated object represents a record (or, row) of the data in the data storage.
+Since most of you are also taking Database course, you can view the model in Django is similar to a database table.
+The attributes you declared in the model class are, more or less, going to be mapped into a database table as the columns/attributes of the table.
+
+Django, by default, uses a database called SQLite that stores the scehma and the records as a file in the filesystem. If you look at the project directory, you may see a file with `.sqlite` extension. It is the SQLite database file.
+Later in subsequent tutorials, you will use another database system called Postgres that is running as a separate program. As a program, the Postgres may run on your local development machine or even on a different computer such as a remote server.
+Remember one of the task in Tutorial 0 that mentioned about setting up a Postgres database on Adaptable?
+The database you set up on Adaptable can be used by your deployed application for storing data.
 
 ### Project Directory Structure
 
