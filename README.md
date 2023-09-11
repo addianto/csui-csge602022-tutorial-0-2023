@@ -1,6 +1,15 @@
-# Tutorial 0
+# Tutorial Notes
 
-Sample content of the README.md:
+## Table of Contents
+
+1. [Tutorial 0](#tutorial-0)
+2. [Tutorial 1](#tutorial-1)
+
+## Tutorial 0
+
+### Sample `README.md`
+
+Sample content of the README.md file:
 
 ```
 Name: Rickey Astley
@@ -13,36 +22,6 @@ Hobby: Not giving up
 
 Major: Software Design
 ```
-
-## Lab Notes
-
-The following subsections provide several notes related to the tutorial.
-
-### Object-Relational Mapping (ORM)
-
-TODO: Revise the following draft
-
-Tutorial 1's instructions told you to write the following code in [`models.py`](./main/models.py):
-
-```python
-from django.db import models
-
-class Product(models.Model):
-    name = models.CharField(max_length=255)
-    date_added = models.DateField(auto_now_add=True)
-    price = models.IntegerField()
-    description = models.TextField()
-```
-
-The `Product` class you just wrote represents the *data model* that will be stored into a permanent data storage such as a database.
-The class represents the structure of your data, while later the instantiated object represents a record (or, row) of the data in the data storage.
-Since most of you are also taking Database course, you can view the model in Django is similar to a database table.
-The attributes you declared in the model class are, more or less, going to be mapped into a database table as the columns/attributes of the table.
-
-Django, by default, uses a database called SQLite that stores the scehma and the records as a file in the filesystem. If you look at the project directory, you may see a file with `.sqlite` extension. It is the SQLite database file.
-Later in subsequent tutorials, you will use another database system called Postgres that is running as a separate program. As a program, the Postgres may run on your local development machine or even on a different computer such as a remote server.
-Remember one of the task in Tutorial 0 that mentioned about setting up a Postgres database on Adaptable?
-The database you set up on Adaptable can be used by your deployed application for storing data.
 
 ### Project Directory Structure
 
@@ -136,6 +115,35 @@ While it might occur rarely, it is possible for an environment to install differ
 In some cases, it might be beneficial if the new version fixed certain issues (e.g., bugfixes).
 However, there are also risks of introducing new issues into the project if it turns out the new version is not compatible with the project.
 Therefore, we usually specify the version of each package in [`requirements.txt`](./requirements.txt).
+
+## Tutorial 1
+
+### Django's Model & Object-Relational Mapping (ORM)
+
+One concept that you practiced during Tutorial 1 was about defining a model class.
+You created a class named `Product` that represents the attributes of a product managed by your web application.
+The code example of the `Product` class is as follows:
+
+```python
+from django.db import models
+
+class Product(models.Model):
+    name = models.CharField(max_length=255)
+    date_added = models.DateField(auto_now_add=True)
+    price = models.IntegerField()
+    description = models.TextField()
+```
+
+The instances of class above are going to be stored (or persisted) into a relational-based data storage, such as a database.
+The class represents the structure of your data, while each instantiated object represents a record (or row) of the data in the database.
+If you have taken or are taking a Database course, you can think of the model class in Django as similar to a database table.
+The attributes you declared in the model class will be mapped into a database table as the columns/attributes of the table.
+
+By default, Django uses a database called SQLite, which stores the schema and records as a file in the filesystem.
+If you look at the project's root directory, you may see a file with a `.sqlite` extension. This is the SQLite database file.
+
+In subsequent tutorials, you will use another database system called Postgres, which runs as a separate program.
+Postgres can run on your local development machine or even on a different computer, such as a remote server.
 
 ### Ignoring Files From Git
 
