@@ -37,3 +37,9 @@ def show_xml(request: HttpRequest) -> HttpResponse:
     products = Product.objects.all()
 
     return HttpResponse(serializers.serialize("xml", products), content_type="application/xml")
+
+
+def show_json(request: HttpRequest) -> HttpResponse:
+    products = Product.objects.all()
+
+    return HttpResponse(serializers.serialize("json", products), content_type="application/json")
