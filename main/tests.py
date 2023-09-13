@@ -45,7 +45,7 @@ class MainAppTest(TestCase):
         sample_product.save()
 
         # Exercise
-        response: HttpResponse = Client().get("/xml/1")
+        response: HttpResponse = Client().get("/xml")
 
         # Verify
         self.assertEquals(response.status_code, HTTPStatus.OK)
@@ -62,7 +62,7 @@ class MainAppTest(TestCase):
         sample_product.save()
 
         # Exercise
-        response: HttpResponse = Client().get("/xml/1")
+        response: HttpResponse = Client().get("/xml")
 
         # Verify
         try:
@@ -85,7 +85,7 @@ class MainAppTest(TestCase):
         sample_product.save()
 
         # Exercise
-        response: HttpResponse = Client().get("/json/1")
+        response: HttpResponse = Client().get("/json")
 
         # Verify
         self.assertEquals(response.status_code, HTTPStatus.OK)
@@ -102,7 +102,7 @@ class MainAppTest(TestCase):
         sample_product.save()
 
         # Exercise
-        response: HttpResponse = Client().get("/json/1")
+        response: HttpResponse = Client().get("/json")
 
         # Verify
         try:
