@@ -1,6 +1,6 @@
 from django.urls import path
 
-from main.views import create_product, show_main, show_xml, show_json
+from main.views import create_product, show_json, show_main, show_xml
 
 app_name = "main"  # pylint: disable=invalid-name
 urlpatterns = [
