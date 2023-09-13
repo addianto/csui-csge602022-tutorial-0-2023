@@ -9,6 +9,18 @@ from .models import Product
 
 
 class MainAppTest(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        cls.product_one = Product.objects.create(
+            name="Product One", price=10, description="A test product called One"
+        )
+        cls.product_two = Product.objects.create(
+            name="Product Two", price=20, description="A test product called Two"
+        )
+        cls.product_three = Product.objects.create(
+            name="Product Three", price=30, description="A test product called Three"
+        )
+
     def test_show_main_returns_ok(self):
         response: HttpResponse = Client().get("/")
         self.assertEqual(response.status_code, HTTPStatus.OK)
@@ -29,7 +41,7 @@ class MainAppTest(TestCase):
         response: HttpResponse = Client().post(
             "/create-product",
             data={
-                "name": "Product A",
+                "name": "Product Test",
                 "price": 42,
                 "description": "A test product",
             },
@@ -38,11 +50,7 @@ class MainAppTest(TestCase):
 
     def test_show_xml_returns_ok(self):
         # Setup
-        sample_product: Product = Product()
-        sample_product.name = "Product A"
-        sample_product.price = 42
-        sample_product.description = "A test product"
-        sample_product.save()
+        # Done by setUpTestData()
 
         # Exercise
         response: HttpResponse = Client().get("/xml")
@@ -51,15 +59,11 @@ class MainAppTest(TestCase):
         self.assertEquals(response.status_code, HTTPStatus.OK)
 
         # Cleanup
-        sample_product.delete()
+        # Cleaned by Django testing classes
 
     def test_show_xml_produces_valid_xml(self):
         # Setup
-        sample_product: Product = Product()
-        sample_product.name = "Product A"
-        sample_product.price = 42
-        sample_product.description = "A test product"
-        sample_product.save()
+        # Done by setUpTestData()
 
         # Exercise
         response: HttpResponse = Client().get("/xml")
@@ -74,15 +78,11 @@ class MainAppTest(TestCase):
             self.fail(f"XML parsing error: {error}")
 
         # Cleanup
-        sample_product.delete()
+        # Cleaned by Django testing classes
 
     def test_show_json_returns_ok(self):
         # Setup
-        sample_product: Product = Product()
-        sample_product.name = "Product A"
-        sample_product.price = 42
-        sample_product.description = "A test product"
-        sample_product.save()
+        # Done by setUpTestData()
 
         # Exercise
         response: HttpResponse = Client().get("/json")
@@ -91,15 +91,11 @@ class MainAppTest(TestCase):
         self.assertEquals(response.status_code, HTTPStatus.OK)
 
         # Cleanup
-        sample_product.delete()
+        # Cleaned by Django testing classes
 
     def test_show_json_produces_valid_json(self):
         # Setup
-        sample_product: Product = Product()
-        sample_product.name = "Product A"
-        sample_product.price = 42
-        sample_product.description = "A test product"
-        sample_product.save()
+        # Done by setUpTestData()
 
         # Exercise
         response: HttpResponse = Client().get("/json")
@@ -114,4 +110,4 @@ class MainAppTest(TestCase):
             self.fail(f"JSON parsing error: {error}")
 
         # Cleanup
-        sample_product.delete()
+        # Cleaned by Django testing classes
