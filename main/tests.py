@@ -1,6 +1,8 @@
 from http import HTTPStatus
 from django.test import TestCase, Client
 from django.http import HttpResponse
+import json
+import xml.etree.ElementTree as ET
 
 
 class MainAppTest(TestCase):
@@ -30,3 +32,31 @@ class MainAppTest(TestCase):
             },
         )
         self.assertRedirects(response, "/", response.status_code, HTTPStatus.OK)
+
+    def test_show_xml_returns_ok(self):
+        response: HttpResponse = Client().get("/xml/1")
+        self.assertEquals(response.status_code, HTTPStatus.OK)
+
+    def test_show_xml_produces_valid_xml(self):
+        response: HttpResponse = Client().get("/xml/1")
+        try:
+            # TODO: The lines xml_data and so on were generated using ChatGPT.
+            #       Verify if the statement is valid and curren!
+            xml_data = ET.fromstring(response.content)
+            # TODO: Add XML validation logic
+        except ET.ParseError as error:
+            self.fail(f"XML parsing error: {error}")
+
+    def test_show_json_returns_ok(self):
+        response: HttpResponse = Client().get("/json/1")
+        self.assertEquals(response.status_code, HTTPStatus.OK)
+
+    def test_show_json_produces_valid_json(self):
+        response: HttpResponse = Client().get("/json/1")
+        try:
+            # TODO: The lines json_data and so on were generated using ChatGPT.
+            #       Verify if the statement is valid and curren!
+            json_data = json.loads(response.content.decode("utf-8"))
+            # TODO: Add JSON validation logic
+        except json.JSONDecodeError as error:
+            self.fail(f"JSON parsing error: {error}")
