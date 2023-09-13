@@ -1,4 +1,5 @@
 from django.core import serializers
+from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
@@ -36,10 +37,36 @@ def create_product(request: HttpRequest) -> HttpResponse:
 def show_xml(request: HttpRequest) -> HttpResponse:
     products = Product.objects.all()
 
-    return HttpResponse(serializers.serialize("xml", products), content_type="application/xml")
+    return HttpResponse(
+        serializers.serialize("xml", products), content_type="application/xml"
+    )
 
 
 def show_json(request: HttpRequest) -> HttpResponse:
     products = Product.objects.all()
 
-    return HttpResponse(serializers.serialize("json", products), content_type="application/json")
+    return HttpResponse(
+        serializers.serialize("json", products), content_type="application/json"
+    )
+
+
+def show_xml_by_id(request: HttpRequest, id: int) -> HttpResponse:
+    # See: https://docs.djangoproject.com/en/4.2/topics/db/queries/#retrieving-a-single-object-with-get
+    try:
+        product = Product.objects.get(pk=id)
+        return HttpResponse(
+            serializers.serialize("xml", [product]), content_type="application/xml"
+        )
+    except ObjectDoesNotExist as product_not_found:
+        return HttpResponseRedirect(reverse("main:show_xml"))
+
+
+def show_json_by_id(request: HttpRequest, id: int) -> HttpResponse:
+    # See: https://docs.djangoproject.com/en/4.2/topics/db/queries/#retrieving-a-single-object-with-get
+    try:
+        product = Product.objects.get(pk=id)
+        return HttpResponse(
+            serializers.serialize("json", [product]), content_type="application/json"
+        )
+    except ObjectDoesNotExist as product_not_found:
+        return HttpResponseRedirect(reverse("main:show_json"))

@@ -23,7 +23,7 @@ class MainAppTest(TestCase):
 
     def test_show_main_returns_ok(self):
         response: HttpResponse = Client().get("/")
-        self.assertEqual(response.status_code, HTTPStatus.OK)
+        self._is_status_ok(response)
 
     def test_show_main_uses_correct_template(self):
         response: HttpResponse = Client().get("/")
@@ -31,7 +31,7 @@ class MainAppTest(TestCase):
 
     def test_create_product_returns_ok(self):
         response: HttpResponse = Client().get("/create-product")
-        self.assertEqual(response.status_code, HTTPStatus.OK)
+        self._is_status_ok(response)
 
     def test_create_product_uses_correct_template(self):
         response: HttpResponse = Client().get("/create-product")
@@ -56,7 +56,7 @@ class MainAppTest(TestCase):
         response: HttpResponse = Client().get("/xml")
 
         # Verify
-        self.assertEquals(response.status_code, HTTPStatus.OK)
+        self._is_status_ok(response)
 
         # Cleanup
         # Cleaned by Django testing classes
@@ -88,7 +88,7 @@ class MainAppTest(TestCase):
         response: HttpResponse = Client().get("/json")
 
         # Verify
-        self.assertEquals(response.status_code, HTTPStatus.OK)
+        self._is_status_ok(response)
 
         # Cleanup
         # Cleaned by Django testing classes
@@ -111,3 +111,20 @@ class MainAppTest(TestCase):
 
         # Cleanup
         # Cleaned by Django testing classes
+
+    def test_show_xml_by_id_returns_ok(self):
+        # Exercise
+        response: HttpResponse = Client().get("/xml/1")
+
+        # Verify
+        self._is_status_ok(response)
+
+    def test_show_json_by_id_returns_ok(self):
+        # Exercise
+        response: HttpResponse = Client().get("/json/1")
+
+        # Verify
+        self._is_status_ok(response)
+
+    def _is_status_ok(self, response):
+        self.assertEqual(response.status_code, HTTPStatus.OK)
