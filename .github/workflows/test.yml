@@ -1,0 +1,23 @@
+---
+name: Run the test suite
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Clone the Git repository
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version-file: .python-version
+          cache: pip
+          cache-dependency-path: requirements.txt
+      - name: Download dependencies
+        run: pip install -r requirements.txt
+      - name: Execute tests
+        run: python manage.py test
