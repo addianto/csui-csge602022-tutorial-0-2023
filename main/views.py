@@ -31,3 +31,9 @@ def create_product(request: HttpRequest) -> HttpResponse:
     }
 
     return render(request, "create_product.html", context)
+
+
+def show_xml(request: HttpRequest) -> HttpResponse:
+    products = Product.objects.all()
+
+    return HttpResponse(serializers.serialize("xml", products), content_type="application/xml")
