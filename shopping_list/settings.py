@@ -12,18 +12,25 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 
+from environ import Env
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# Load environment variables
+env: Env = Env()
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
+
+# PRODUCTION: flag that indicates whether the application is running on production environment
+PRODUCTION: bool = env.bool("PRODUCTION", False)
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = "django-insecure-bvmkq9d5&u$j@=2!7@+sf@n(w*38g&uj(&hh1_n5o5&u0cjjno"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False if PRODUCTION else True
 
 ALLOWED_HOSTS = ["*"]
 
@@ -83,6 +90,10 @@ DATABASES = {
     }
 }
 
+if PRODUCTION:
+    DATABASES = {"default": env.db("DATABASE_URL")}
+    DATABASES["default"]["ATOMIC_REQUESTS"] = True
+
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
 
@@ -116,7 +127,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_ROOT = BASE_DIR / "staticfiles"
+STATIC_ROOT = BASE_DIR / "static"
 STATIC_URL = "static/"
 
 # Default primary key field type
