@@ -1,7 +1,9 @@
+from django.contrib import messages
+from django.contrib.auth.forms import UserCreationForm
 from django.core import serializers
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from django.urls import reverse
 
 from main.forms import ProductForm
@@ -70,3 +72,20 @@ def show_json_by_id(request: HttpRequest, id: int) -> HttpResponse:
         )
     except ObjectDoesNotExist as product_not_found:
         return HttpResponseRedirect(reverse("main:show_json"))
+
+
+def register(request: HttpRequest) -> HttpResponse:
+    form = UserCreationForm()
+
+    if request.method == "POST":
+        form: UserCreationForm = UserCreationForm(request.POST)
+
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Your account has been successfully created!")
+
+    context: dict = {
+        "form": form,
+    }
+
+    return render(request, "register.html", context)

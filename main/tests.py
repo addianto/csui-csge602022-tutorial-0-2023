@@ -126,5 +126,13 @@ class MainAppTest(TestCase):
         # Verify
         self._is_status_ok(response)
 
+    def test_register_returns_ok(self):
+        response: HttpResponse = Client().get("/register")
+        self._is_status_ok(response)
+
+    def test_register_uses_correct_template(self):
+        response: HttpResponse = Client().get("/register")
+        self.assertTemplateUsed(response, "register.html")
+
     def _is_status_ok(self, response):
         self.assertEqual(response.status_code, HTTPStatus.OK)
