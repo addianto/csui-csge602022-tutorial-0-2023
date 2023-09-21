@@ -1,4 +1,5 @@
 from django.contrib import messages
+from django.contrib.auth import authenticate, login
 from django.contrib.auth.forms import UserCreationForm
 from django.core import serializers
 from django.core.exceptions import ObjectDoesNotExist
@@ -89,3 +90,22 @@ def register(request: HttpRequest) -> HttpResponse:
     }
 
     return render(request, "register.html", context)
+
+
+def login_user(request: HttpRequest) -> HttpResponse:
+    if request.method == "POST":
+        username: str = request.POST.get("username")
+        password: str = request.POST.get("password")
+        user = authenticate(request, username=username, password=password)
+
+        if user is not None:
+            login(request, user)
+            return redirect("main:show_main")
+        else:
+            messages.info(
+                request, "Sorry, incorrect username or password. Please try again."
+            )
+
+    context: dict = {}
+
+    return render(request, "login.html", context)
