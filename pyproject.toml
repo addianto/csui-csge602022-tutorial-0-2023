@@ -1,0 +1,27 @@
+[project]
+name = "csui-csge602022-tutorial-0-2023"
+version = "0.2.0"
+description = "An example of expected result for tutorials from CSGE602022 year 2023."
+readme = "README.md"
+requires-python = ">=3.11"
+authors = [{ name = "Daya Adianto", email = "dayaadianto@cs.ui.ac.id" }]
+
+[tool.black]
+line-length = 88
+
+[tool.isort]
+extend_skip = [".env", "env"]
+profile = "black"
+
+[tool.pylint.format]
+max-line-length = 88
+
+[tool.pylint.main]
+disable = [
+    "missing-class-docstring",
+    "missing-function-docstring",
+    "missing-module-docstring",
+    "unused-import",
+]
+ignore-paths = [".github/", "env/"]
+ignore-patterns = ["^\\d+_\\w+.py$"]

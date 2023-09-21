@@ -309,4 +309,14 @@ Temporary Items
 *.vsix
 
 # Project-specific
+.github/
+.vscode/
 static/
+.editorconfig
+.gitignore
+.python-version
+Dockerfile
+Procfile
+README.md
+pyproject.toml
+runtime.txt
