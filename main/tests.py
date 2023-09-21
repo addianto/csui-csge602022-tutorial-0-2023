@@ -128,3 +128,8 @@ class MainAppTest(TestCase):
 
     def _is_status_ok(self, response):
         self.assertEqual(response.status_code, HTTPStatus.OK)
+
+    def test_register_returns_ok(self):
+        response: HttpResponse = Client().get("/register")
+
+        self._is_status_ok(response)
