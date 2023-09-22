@@ -1,5 +1,5 @@
 from django.contrib import messages
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import UserCreationForm
 from django.core import serializers
 from django.core.exceptions import ObjectDoesNotExist
@@ -109,3 +109,8 @@ def login_user(request: HttpRequest) -> HttpResponse:
     context: dict = {}
 
     return render(request, "login.html", context)
+
+
+def logout_user(request: HttpRequest) -> HttpResponse:
+    logout(request)
+    return redirect("main:login")
