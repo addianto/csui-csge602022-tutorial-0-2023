@@ -1,3 +1,5 @@
+import datetime
+
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
@@ -20,6 +22,9 @@ def show_main(request: HttpRequest) -> HttpResponse:
         "name": "The One and Only: Rickey Astley",
         "class": "PBP Int.",
         "products": products,
+        "last_login": request.COOKIES["last_login"]
+        if "last_login" in request.COOKIES.keys()
+        else "",
     }
 
     return render(request, "main.html", context)
@@ -102,7 +107,9 @@ def login_user(request: HttpRequest) -> HttpResponse:
 
         if user is not None:
             login(request, user)
-            return redirect("main:show_main")
+            response: HttpResponse = redirect("main:show_main")
+            response.set_cookie("last_login", str(datetime.datetime.now()))
+            return response
         else:
             messages.info(
                 request, "Sorry, incorrect username or password. Please try again."
@@ -115,4 +122,6 @@ def login_user(request: HttpRequest) -> HttpResponse:
 
 def logout_user(request: HttpRequest) -> HttpResponse:
     logout(request)
-    return redirect("main:login")
+    response: HttpResponse = redirect("main:login")
+    response.delete_cookie("last_login")
+    return response
