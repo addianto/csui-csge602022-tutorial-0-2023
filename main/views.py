@@ -22,6 +22,9 @@ def show_main(request: HttpRequest) -> HttpResponse:
         "name": "The One and Only: Rickey Astley",
         "class": "PBP Int.",
         "products": products,
+        # This conditional is not required if @login_required works properly
+        # Nevertheless, it is still a good practice to check for any input coming from user
+        # Even though not explicitly stated, cookie is a part of input transmitted from user/cient!
         "last_login": request.COOKIES["last_login"]
         if "last_login" in request.COOKIES.keys()
         else "",

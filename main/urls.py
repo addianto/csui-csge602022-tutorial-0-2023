@@ -10,7 +10,6 @@ from main.views import (
     show_main,
     show_xml,
     show_xml_by_id,
-    register,
 )
 
 app_name = "main"  # pylint: disable=invalid-name
