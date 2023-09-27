@@ -16,10 +16,10 @@ from main.models import Product
 
 @login_required(login_url="/login")
 def show_main(request: HttpRequest) -> HttpResponse:
-    products = Product.objects.all()
+    products = Product.objects.filter(user=request.user)
 
     context: dict = {
-        "name": "The One and Only: Rickey Astley",
+        "name": request.user.username,
         "class": "PBP Int.",
         "products": products,
         # This conditional is not required if @login_required works properly
@@ -33,11 +33,14 @@ def show_main(request: HttpRequest) -> HttpResponse:
     return render(request, "main.html", context)
 
 
+@login_required(login_url="/login")
 def create_product(request: HttpRequest) -> HttpResponse:
     form = ProductForm(request.POST or None)
 
     if form.is_valid() and request.method == "POST":
-        form.save()
+        product: Product = form.save(commit=False)
+        product.user = request.user
+        product.save()
         return HttpResponseRedirect(reverse("main:show_main"))
 
     context: dict = {
