@@ -2,8 +2,9 @@ import json
 import xml.etree.ElementTree as ET
 from http import HTTPStatus
 
+from django.contrib.auth.models import User
 from django.http import HttpResponse
-from django.test import Client, TestCase
+from django.test import TestCase
 
 from .models import Product
 
@@ -11,34 +12,42 @@ from .models import Product
 class MainAppTest(TestCase):
     @classmethod
     def setUpTestData(cls):
+        test_user: User = User.objects.create_user(username="test_user", password="test_pass")
+
         cls.product_one = Product.objects.create(
-            name="Product One", price=10, description="A test product called One"
+            name="Product One", price=10, description="A test product called One", user=test_user,
         )
         cls.product_two = Product.objects.create(
-            name="Product Two", price=20, description="A test product called Two"
+            name="Product Two", price=20, description="A test product called Two", user=test_user,
         )
         cls.product_three = Product.objects.create(
-            name="Product Three", price=30, description="A test product called Three"
+            name="Product Three", price=30, description="A test product called Three", user=test_user,
         )
 
+    def setUp(self):
+        self.client.login(username="test_user", password="test_pass")
+
+    def tearDown(self):
+        self.client.logout()
+
     def test_show_main_returns_ok(self):
-        response: HttpResponse = Client().get("/")
+        response: HttpResponse = self.client.get("/")
         self._is_status_ok(response)
 
     def test_show_main_uses_correct_template(self):
-        response: HttpResponse = Client().get("/")
+        response: HttpResponse = self.client.get("/")
         self.assertTemplateUsed(response, "main.html")
 
     def test_create_product_returns_ok(self):
-        response: HttpResponse = Client().get("/create-product")
+        response: HttpResponse = self.client.get("/create-product")
         self._is_status_ok(response)
 
     def test_create_product_uses_correct_template(self):
-        response: HttpResponse = Client().get("/create-product")
+        response: HttpResponse = self.client.get("/create-product")
         self.assertTemplateUsed(response, "create_product.html")
 
     def test_create_product_redirects_when_success(self):
-        response: HttpResponse = Client().post(
+        response: HttpResponse = self.client.post(
             "/create-product",
             data={
                 "name": "Product Test",
@@ -53,7 +62,7 @@ class MainAppTest(TestCase):
         # Done by setUpTestData()
 
         # Exercise
-        response: HttpResponse = Client().get("/xml")
+        response: HttpResponse = self.client.get("/xml")
 
         # Verify
         self._is_status_ok(response)
@@ -66,7 +75,7 @@ class MainAppTest(TestCase):
         # Done by setUpTestData()
 
         # Exercise
-        response: HttpResponse = Client().get("/xml")
+        response: HttpResponse = self.client.get("/xml")
 
         # Verify
         try:
@@ -85,7 +94,7 @@ class MainAppTest(TestCase):
         # Done by setUpTestData()
 
         # Exercise
-        response: HttpResponse = Client().get("/json")
+        response: HttpResponse = self.client.get("/json")
 
         # Verify
         self._is_status_ok(response)
@@ -98,7 +107,7 @@ class MainAppTest(TestCase):
         # Done by setUpTestData()
 
         # Exercise
-        response: HttpResponse = Client().get("/json")
+        response: HttpResponse = self.client.get("/json")
 
         # Verify
         try:
@@ -114,17 +123,30 @@ class MainAppTest(TestCase):
 
     def test_show_xml_by_id_returns_ok(self):
         # Exercise
-        response: HttpResponse = Client().get("/xml/1")
+        response: HttpResponse = self.client.get("/xml/1")
 
         # Verify
         self._is_status_ok(response)
 
     def test_show_json_by_id_returns_ok(self):
         # Exercise
-        response: HttpResponse = Client().get("/json/1")
+        response: HttpResponse = self.client.get("/json/1")
 
         # Verify
         self._is_status_ok(response)
 
+    def test_register_returns_ok(self):
+        response: HttpResponse = self.client.get("/register")
+        self._is_status_ok(response)
+
+    def test_register_uses_correct_template(self):
+        response: HttpResponse = self.client.get("/register")
+        self.assertTemplateUsed(response, "register.html")
+
     def _is_status_ok(self, response):
         self.assertEqual(response.status_code, HTTPStatus.OK)
+
+    def test_register_returns_ok(self):
+        response: HttpResponse = self.client.get("/register")
+
+        self._is_status_ok(response)

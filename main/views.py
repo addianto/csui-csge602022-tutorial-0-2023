@@ -1,30 +1,46 @@
+import datetime
+
+from django.contrib import messages
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import UserCreationForm
 from django.core import serializers
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from django.urls import reverse
 
 from main.forms import ProductForm
 from main.models import Product
 
 
+@login_required(login_url="/login")
 def show_main(request: HttpRequest) -> HttpResponse:
-    products = Product.objects.all()
+    products = Product.objects.filter(user=request.user)
 
     context: dict = {
-        "name": "The One and Only: Rickey Astley",
+        "name": request.user.username,
         "class": "PBP Int.",
         "products": products,
+        # This conditional is not required if @login_required works properly
+        # Nevertheless, it is still a good practice to check for any input coming from user
+        # Even though not explicitly stated, cookie is a part of input transmitted from user/cient!
+        "last_login": request.COOKIES["last_login"]
+        if "last_login" in request.COOKIES.keys()
+        else "",
     }
 
     return render(request, "main.html", context)
 
 
+@login_required(login_url="/login")
 def create_product(request: HttpRequest) -> HttpResponse:
     form = ProductForm(request.POST or None)
 
     if form.is_valid() and request.method == "POST":
-        form.save()
+        product: Product = form.save(commit=False)
+        product.user = request.user
+        product.save()
         return HttpResponseRedirect(reverse("main:show_main"))
 
     context: dict = {
@@ -70,3 +86,48 @@ def show_json_by_id(request: HttpRequest, id: int) -> HttpResponse:
         )
     except ObjectDoesNotExist as product_not_found:
         return HttpResponseRedirect(reverse("main:show_json"))
+
+
+def register(request: HttpRequest) -> HttpResponse:
+    form: UserCreationForm = UserCreationForm()
+
+    if request.method == "POST":
+        form = UserCreationForm(request.POST)
+
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Your account has been successfully created!")
+
+    context: dict = {
+        "form": form,
+    }
+
+    return render(request, "register.html", context)
+
+
+def login_user(request: HttpRequest) -> HttpResponse:
+    if request.method == "POST":
+        username: str = request.POST.get("username")
+        password: str = request.POST.get("password")
+        user = authenticate(request, username=username, password=password)
+
+        if user is not None:
+            login(request, user)
+            response: HttpResponse = redirect("main:show_main")
+            response.set_cookie("last_login", str(datetime.datetime.now()))
+            return response
+        else:
+            messages.info(
+                request, "Sorry, incorrect username or password. Please try again."
+            )
+
+    context: dict = {}
+
+    return render(request, "login.html", context)
+
+
+def logout_user(request: HttpRequest) -> HttpResponse:
+    logout(request)
+    response: HttpResponse = redirect("main:login")
+    response.delete_cookie("last_login")
+    return response
