@@ -1,4 +1,5 @@
 import datetime
+from http import HTTPStatus
 
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
@@ -138,7 +139,7 @@ def logout_user(request: HttpRequest) -> HttpResponse:
 def edit_product(request: HttpRequest, id: int) -> HttpResponse:
     # Get product by ID
     # Immediately throw HTTP 404 if object not found
-    product: Product = get_object_or_404(Product)
+    product: Product = get_object_or_404(Product, pk=id)
 
     # If the request is POST, then use the submitted data to populate fields in the form
     # Otherwise, use the found Product data to populate the fields instead
@@ -154,3 +155,7 @@ def edit_product(request: HttpRequest, id: int) -> HttpResponse:
     }
 
     return render(request, "edit_product.html", context)
+
+
+def handle_custom_404(request: HttpRequest, exception: Exception) -> HttpResponse:
+    return render(request, "404.html", context={}, status=HTTPStatus.NOT_FOUND)

@@ -1,3 +1,4 @@
+# urls.py also known as URLconf
 from django.urls import path
 
 from main.views import (
@@ -14,6 +15,8 @@ from main.views import (
 )
 
 app_name = "main"  # pylint: disable=invalid-name
+handler404 = "main.views.handle_custom_404"
+
 urlpatterns = [
     path("", show_main, name="show_main"),
     path("create-product", create_product, name="create_product"),
