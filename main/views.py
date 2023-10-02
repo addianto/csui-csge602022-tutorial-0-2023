@@ -157,5 +157,18 @@ def edit_product(request: HttpRequest, id: int) -> HttpResponse:
     return render(request, "edit_product.html", context)
 
 
+@login_required(login_url="/login")
+def delete_product(request: HttpRequest, id: int) -> HttpResponse:
+    # Get product by ID
+    # Immediately throw HTTP 404 if object not found
+    product: Product = get_object_or_404(Product, pk=id)
+
+    # Remove product
+    product.delete()
+
+    # Redirect to the main page
+    return redirect("main:show_main")
+
+
 def handle_custom_404(request: HttpRequest, exception: Exception) -> HttpResponse:
     return render(request, "404.html", context={}, status=HTTPStatus.NOT_FOUND)

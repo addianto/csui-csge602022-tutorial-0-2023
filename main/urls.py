@@ -3,6 +3,7 @@ from django.urls import path
 
 from main.views import (
     create_product,
+    delete_product,
     edit_product,
     login_user,
     logout_user,
@@ -28,4 +29,5 @@ urlpatterns = [
     path("login", login_user, name="login"),
     path("logout", logout_user, name="logout"),
     path("edit-product/<int:id>", edit_product, name="edit_product"),
+    path("delete-product/<int:id>", delete_product, name="delete_product"),
 ]

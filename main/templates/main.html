@@ -16,7 +16,7 @@
         <th>Price</th>
         <th>Description</th>
         <th>Date Added</th>
-        <th>Actions</th>
+        <th colspan="2">Actions</th>
     </tr>
     {% comment %} Some comments ... {% endcomment %}
     {% for product in products %}
@@ -29,6 +29,13 @@
             <a href="{% url 'main:edit_product' product.pk %}">
                 <button>
                     Edit
+                </button>
+            </a>
+        </td>
+        <td>
+            <a href="{% url 'main:delete_product' product.pk %}">
+                <button>
+                    Delete
                 </button>
             </a>
         </td>
