@@ -16,6 +16,7 @@
         <th>Price</th>
         <th>Description</th>
         <th>Date Added</th>
+        <th>Actions</th>
     </tr>
     {% comment %} Some comments ... {% endcomment %}
     {% for product in products %}
@@ -24,6 +25,13 @@
         <td>{{ product.price }}</td>
         <td>{{ product.description }}</td>
         <td>{{ product.date_added }}</td>
+        <td>
+            <a href="{% url 'main:edit_product' product.pk %}">
+                <button>
+                    Edit
+                </button>
+            </a>
+        </td>
     </tr>
     {% endfor %}
 </table>

@@ -12,16 +12,27 @@ from .models import Product
 class MainAppTest(TestCase):
     @classmethod
     def setUpTestData(cls):
-        test_user: User = User.objects.create_user(username="test_user", password="test_pass")
+        test_user: User = User.objects.create_user(
+            username="test_user", password="test_pass"
+        )
 
         cls.product_one = Product.objects.create(
-            name="Product One", price=10, description="A test product called One", user=test_user,
+            name="Product One",
+            price=10,
+            description="A test product called One",
+            user=test_user,
         )
         cls.product_two = Product.objects.create(
-            name="Product Two", price=20, description="A test product called Two", user=test_user,
+            name="Product Two",
+            price=20,
+            description="A test product called Two",
+            user=test_user,
         )
         cls.product_three = Product.objects.create(
-            name="Product Three", price=30, description="A test product called Three", user=test_user,
+            name="Product Three",
+            price=30,
+            description="A test product called Three",
+            user=test_user,
         )
 
     def setUp(self):

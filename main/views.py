@@ -7,7 +7,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.core import serializers
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
-from django.shortcuts import redirect, render
+from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 
 from main.forms import ProductForm
@@ -97,6 +97,7 @@ def register(request: HttpRequest) -> HttpResponse:
         if form.is_valid():
             form.save()
             messages.success(request, "Your account has been successfully created!")
+            return redirect("main:show_main")
 
     context: dict = {
         "form": form,
@@ -131,3 +132,25 @@ def logout_user(request: HttpRequest) -> HttpResponse:
     response: HttpResponse = redirect("main:login")
     response.delete_cookie("last_login")
     return response
+
+
+@login_required(login_url="/login")
+def edit_product(request: HttpRequest, id: int) -> HttpResponse:
+    # Get product by ID
+    # Immediately throw HTTP 404 if object not found
+    product: Product = get_object_or_404(Product)
+
+    # If the request is POST, then use the submitted data to populate fields in the form
+    # Otherwise, use the found Product data to populate the fields instead
+    form: ProductForm = ProductForm(request.POST or None, instance=product)
+
+    # Self-explanatory
+    if form.is_valid() and request.method == "POST":
+        form.save()
+        return redirect("main:show_main")
+
+    context: dict = {
+        "form": form,
+    }
+
+    return render(request, "edit_product.html", context)
