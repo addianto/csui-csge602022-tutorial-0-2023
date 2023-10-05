@@ -1,4 +1,4 @@
-import datetime
+from http import HTTPStatus
 
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
@@ -6,9 +6,15 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
 from django.core import serializers
 from django.core.exceptions import ObjectDoesNotExist
-from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
+from django.http import (
+    HttpRequest,
+    HttpResponse,
+    HttpResponseNotFound,
+    HttpResponseRedirect,
+)
 from django.shortcuts import redirect, render
 from django.urls import reverse
+from django.views.decorators.csrf import csrf_exempt
 
 from main.forms import ProductForm
 from main.models import Product
@@ -131,3 +137,17 @@ def logout_user(request: HttpRequest) -> HttpResponse:
     response: HttpResponse = redirect("main:login")
     response.delete_cookie("last_login")
     return response
+
+
+@csrf_exempt
+def create_product_ajax(request: HttpRequest) -> HttpResponse:
+    form = ProductForm(request.POST)
+
+    if form.is_valid() and request.method == "POST":
+        product: Product = form.save(commit=False)
+        product.user = request.user
+        product.save()
+
+        return show_json_by_id(request, id=product.pk)
+
+    return HttpResponseNotFound()

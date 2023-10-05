@@ -10,7 +10,7 @@
 <p>{{ name }}</p>
 <h5>Class:</h5>
 <p>{{ class }}</p>
-<table>
+<table id="product_table">
     <tr>
         <th>Name</th>
         <th>Price</th>
@@ -43,5 +43,38 @@
 </a>
 
 <h5>Last login session: {{ last_login }}</h5>
+
+<script>
+    const getProducts = async () => {
+        return fetch("{% url 'main:show_json' %}").then((response) => { return response.json() })
+    }
+
+    const refreshProducts = async () => {
+        document.getElementById("product_table").innerHTML = ""
+        const products = await getProducts()
+
+        let htmlString = `
+        <tr>
+            <th>Name</th>
+            <th>Price</th>
+            <th>Description</th>
+            <th>Date Added</th>
+        </tr>`
+
+        products.forEach((product) => {
+            htmlString += `\n
+            <tr>
+                <td>${product.fields.name}</td>
+                <td>${product.fields.price}</td>
+                <td>${product.fields.description}</td>
+                <td>${product.fields.date_added}</td>
+            </tr>`
+        })
+
+        document.getElementById("product_table").innerHTML = htmlString
+    }
+
+    refreshProducts()
+</script>
 
 {% endblock content %}

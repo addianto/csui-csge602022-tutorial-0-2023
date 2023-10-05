@@ -2,6 +2,7 @@ from django.urls import path
 
 from main.views import (
     create_product,
+    create_product_ajax,
     login_user,
     logout_user,
     register,
@@ -23,4 +24,5 @@ urlpatterns = [
     path("register", register, name="register"),
     path("login", login_user, name="login"),
     path("logout", logout_user, name="logout"),
+    path("create-product-ajax", create_product_ajax, name="create_product_ajax"),
 ]
