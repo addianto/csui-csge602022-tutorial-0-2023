@@ -1,0 +1,18 @@
+h1 {
+    color: #fca205;
+    font-style: italic;
+}
+
+#header {
+    background-color: #f0f0f0;
+    margin-top: 0;
+    padding: 20px 20px 20px 40px;
+}
+
+.content-section {
+    background-color: #3696e1;
+    margin-bottom: 30px;
+    color: #000;
+    font-family: cursive;
+    padding: 20px 20px 20px 40px;
+}
